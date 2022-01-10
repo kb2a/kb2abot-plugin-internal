@@ -1,0 +1,33 @@
+{
+  "name": "kb2abot-plugin-internal",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "internal plugin",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node --es-module-specifier-resolution=node --no-warnings src",
+    "dev": "node --trace-warnings --es-module-specifier-resolution=node src",
+    "debug": "node --trace-warnings --es-module-specifier-resolution=node --inspect-brk src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kb2ateam/kb2abot-plugin-internal.git"
+  },
+  "author": "khoakomlem",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@babel/plugin-syntax-top-level-await": "^7.14.5",
+    "axios": "^0.24.0",
+    "cheerio": "^1.0.0-rc.10",
+    "deep-extend": "^0.6.0",
+    "node-fetch": "^3.1.0",
+    "string-similarity": "^4.0.4",
+    "tiktok-scraper": "^1.4.36",
+    "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0"
+  }
+}
