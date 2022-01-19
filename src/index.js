@@ -25,6 +25,13 @@ export default class Internal extends Plugin {
 
 	// Called when this plugin is enabled
 	async onEnable() {}
+
+	async hook(thread, message, reply, api) {
+		const hookers = []
+		for (const cmd of this.commands)
+			if (cmd.hook) hookers.push(cmd.hook(thread, message, reply, api))
+		await Promise.all(hookers)
+	}
 }
 
 export {GameSchema, StateManager, gameManager} from "./commands/game"

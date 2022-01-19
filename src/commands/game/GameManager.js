@@ -33,7 +33,7 @@ export default class GameManager extends Manager {
 	}
 
 	async clean(threadID) {
-		const item = this.find({ threadID })
+		const item = this.get(threadID)
 		if (item) {
 			try {
 				await item.clean()

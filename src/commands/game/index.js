@@ -36,8 +36,8 @@ export default class Game extends Command {
 	}
 
 	hook(thread, message, reply, api) {
-		for (const game of gameManager.items) {
-			if (game.participants.includes(message.senderID) && (game.threadID === message.threadID || !message.isGroup)) {
+		for (const game of gameManager) {
+			if (game.threadID === message.threadID || !message.isGroup) {
 				game.onMessage(thread, message, reply)
 			}
 		}
