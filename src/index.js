@@ -1,22 +1,36 @@
-import {readFileSync} from "fs"
-import {resolve} from "url"
-
+import fs from "fs"
+import url from "url"
+import glob from "glob"
 import {Plugin} from "kb2abot"
-import * as Command from "./commands"
-import configTemplate from "./template/config"
-import userdataTemplate from "./template/userdata"
 
 export default class Internal extends Plugin {
 	package = JSON.parse(
-		readFileSync(new URL(resolve(import.meta.url, "../package.json")))
+		fs.readFileSync(new URL(url.resolve(import.meta.url, "../package.json")))
 	);
-	configTemplate = configTemplate;
-	userdataTemplate = userdataTemplate;
+
+	handleDatastore(rawConfig, rawUserdata) {
+		const templateConfig = {
+			datastoreInterval: 1000 * 60 * 60 * 1
+		}
+		const templateUserdata = {
+			aar: {},
+			messages: [],
+			rank: {}
+		}
+		return {
+			config: {...templateConfig, ...rawConfig},
+			userdata: {...templateUserdata, ...rawUserdata}
+		}
+	}
 
 	// Called after this plugin is inited but before it has been enabled (like an async constructor)
 	async load() {
+		const files = glob.sync(url.fileURLToPath(new URL(url.resolve(import.meta.url, "commands/*.js"))))
 		const commands = []
-		for (const key in Command) commands.push(new Command[key]())
+		for (const file of files) {
+			const Command = (await import(file)).default
+			commands.push(new Command())
+		}
 		await this.commands.add(...commands)
 	}
 
