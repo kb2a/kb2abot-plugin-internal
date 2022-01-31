@@ -1,4 +1,5 @@
 import {Command} from "kb2abot"
+import {isUrlValid} from "kb2abot/util/common"
 // import {shortenUrl} from "./shorten"
 
 export default class AddUser extends Command {
@@ -55,10 +56,6 @@ async function getIdByEverything(api, threadID, input) {
 		}
 
 	return null
-}
-
-function isUrlValid(userInput) {
-	return userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g) === null ? false : true
 }
 
 function isValidFacebookHost(hostname) {

@@ -23,7 +23,7 @@ export default class Internal extends Plugin {
 		}
 	}
 
-	// Called after this plugin is inited but before it has been enabled (like an async constructor)
+	// Called after this plugin is constructored (you would wrap your "async this.commands.add(command)" in this function in order to load commands in synchronous)
 	async load() {
 		const files = glob.sync(url.fileURLToPath(new URL(url.resolve(import.meta.url, "commands/*.js"))))
 		const commands = []
