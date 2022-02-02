@@ -4,7 +4,7 @@ import {Command} from "kb2abot"
 export default class Help extends Command {
 	keywords = ["help"];
 	description = "Hiển thị hướng dẫn hoặc xem danh sách câu lệnh";
-	guide = "[<command>]";
+	guide = "[command]";
 	permission = {
 		"*": "*"
 	};

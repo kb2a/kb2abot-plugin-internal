@@ -4,7 +4,7 @@ import {asyncWait} from "kb2abot/util/common"
 export default class Ping extends Command {
 	keywords = ["ping"];
 	description = "Đỗ trễ của bot và server plugin";
-	guide = "[<packets>=5]";
+	guide = "[packets=5]";
 	permission = {
 		"*": "*"
 	};
@@ -18,7 +18,8 @@ export default class Ping extends Command {
 		if (packets < 1 || packets > 100) return "Số packets ko hợp lệ"
 		const arr = []
 		for (let i = 0; i < packets; i++) {
-			const latency = Math.max(Date.now() - (await api.ping()), 0)
+			const latency = Math.max(Date.now() - (await api.socket.emitPromise("ping", Date.now())), 0)
+			console.log(latency)
 			arr.push(latency)
 			await asyncWait(100)
 		}
@@ -26,7 +27,7 @@ export default class Ping extends Command {
 		const avg = arr.reduce((prev, cur) => prev + cur) / arr.length
 
 		return [
-			`Số packet(s) ping: ${packets}`,
+			`Số packet(s): ${packets}`,
 			`Ping cao nhất: ${arr[arr.length - 1]}ms`,
 			`Ping thấp nhất: ${arr[0]}ms`,
 			`Ping trung bình: ${avg.toFixed(2)}ms`

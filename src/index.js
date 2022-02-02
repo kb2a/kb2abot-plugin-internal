@@ -10,7 +10,7 @@ export default class Internal extends Plugin {
 
 	handleDatastore(rawConfig, rawUserdata) {
 		const templateConfig = {
-			datastoreInterval: 1000 * 60 * 60 * 1
+			aarInterval: 1000 * 60
 		}
 		const templateUserdata = {
 			aar: {},
@@ -39,6 +39,13 @@ export default class Internal extends Plugin {
 
 	// Called when this plugin is enabled
 	async onEnable() {}
+
+	async onLogin(api) {
+		const connecters = []
+		for (const cmd of this.commands)
+			if (cmd.onLogin) connecters.push(cmd.onLogin(api))
+		await Promise.all(connecters)
+	}
 
 	async hook(thread, message, reply, api) {
 		const hookers = []

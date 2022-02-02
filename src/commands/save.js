@@ -11,10 +11,7 @@ export default class Save extends Command {
 
 	// Called after this command is inited (like an async constructor)
 	async load() {
-		this.interval = setInterval(() => {
-			this.plugin.pluginManager.saveDatastore(this.plugin)
-			success("Saved datastore successfully!")
-		}, this.plugin.config.datastoreInterval || 1000*60*60*1)
+		
 	}
 
 	// Called when this command is used by client

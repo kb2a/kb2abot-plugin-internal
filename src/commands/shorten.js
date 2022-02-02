@@ -18,7 +18,13 @@ export default class Shorten extends Command {
 
 	async onCall(thread, message, reply, api) {
 		const [input, alias] = message.args
-		return await shortenURL(input, alias)
+		console.log(input, alias)
+		try {
+			return await shortenURL(input, alias)
+		}
+		catch(err) {
+			return err.message
+		}
 	}
 }
 
@@ -26,6 +32,10 @@ export async function shortenURL(input, alias = uniqid().slice(0, 5)) {
 	if (!input || !isUrlValid(encodeURI(input))) throw new Error("URL invalid")
 	if (alias.length < 5) throw new Error("Alias length must be longer or equal to 5")
 	const html = await (await fetch(`https://tinyurl.com/create.php?source=indexpage&url=${encodeURIComponent(input)}&alias=${encodeURIComponent(alias)}`)).text()
+	console.log(html)
 	const $ = cheerio.load(html)
-	return $("#copy_div").attr("href")
+	const res = $("#copy_div").attr("href")
+	if (!res)
+		throw new Error("Alias unavailable")
+	return res
 }

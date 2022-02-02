@@ -3,7 +3,7 @@ import {Command} from "kb2abot"
 export default class Rank extends Command {
 	keywords = ["rank"];
 	description = "Xếp hạng mọi người";
-	guide = "[<max>=10]";
+	guide = "[max=10]";
 	permission = {
 		"*": "*"
 	};
@@ -13,32 +13,33 @@ export default class Rank extends Command {
 
 	// Called when this command is used by client
 	async onCall(thread, message, reply, api) {
-		const userdata = this.plugin.userdata
+		const rank = this.plugin.userdata.rank
+		if (!rank[thread.id]) rank[thread.id] = {}
+		const threadRank = rank[thread.id]
 		const max = Number(message.args[0]) || 10
-		try {
-			const {participantIDs} = await api.getThreadInfo(message.threadID)
-			const temp = []
-			for (const threadID of participantIDs)
-				temp.push({
-					threadID,
-					amount: userdata.rank[threadID] || 0
-				})
-			temp.sort((a, b) => b.amount - a.amount)
-			const final = []
-			for (const tmp of temp) {
-				participantIDs.includes(tmp.threadID) && final.push(tmp.threadID)
+		const {participantIDs} = await api.getThreadInfo(message.threadID)
+		const sorting = participantIDs.map(id => {
+			return {
+				threadID: id,
+				amount: threadRank[id] || 0
 			}
-			const uinfos = await api.getUserInfo(final.slice(0, max))
-			let repMsg = `Top ${max} bạn tương tác nhiều nhất: \n`
-			for (let i = 0; i < temp.length; i++) {
-				if (!uinfos[temp[i].threadID]) continue
-				const {name} = uinfos[temp[i].threadID]
-				repMsg += `${i + 1}. (${temp[i].amount}) ${name}\n`
-			}
-			return repMsg
-		} catch {
-			return "Lỗi phát sinh trong quá trình xếp hạng."
+		}).sort((a, b) => b.amount - a.amount)
+		const uinfos = await api.getUserInfo(sorting.map(s => s.threadID).slice(0, max))
+		let repMsg = `Top ${max} bạn tương tác nhiều nhất: \n`
+		for (let i = 0; i < Math.min(max, sorting.length); i++) {
+			if (!uinfos[sorting[i].threadID]) continue
+			const {name} = uinfos[sorting[i].threadID]
+			repMsg += `${i + 1}. (${sorting[i].amount}) ${name}\n`
 		}
+		return repMsg
+	}
+
+	hook(thread, message, reply, api) {
+		const rank = this.plugin.userdata.rank
+		if (!rank[thread.id]) rank[thread.id] = {}
+		const threadRank = rank[thread.id]
+		if (!threadRank[message.senderID]) threadRank[message.senderID] = 0
+		threadRank[message.senderID]++
 	}
 }
 

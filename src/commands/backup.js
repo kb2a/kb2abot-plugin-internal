@@ -15,4 +15,8 @@ export default class Backup extends Command {
 	async onCall(thread, message, reply, api) {
 		return `Tổng số tin nhắn đã lưu trữ: ${this.plugin.userdata.messages.length}`
 	}
+
+	hook(thread, message, reply, api) {
+		this.plugin.userdata.messages.push(message)
+	}
 }
