@@ -1,7 +1,7 @@
 {
   "name": "kb2abot-plugin-internal",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "internal plugin",
   "main": "src/index.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
     "deep-extend": "^0.6.0",
+    "kb2abot": "^1.0.0",
     "node-fetch": "^3.1.0",
     "string-similarity": "^4.0.4",
     "systeminformation": "^5.11.0",
