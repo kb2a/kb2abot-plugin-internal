@@ -5,12 +5,12 @@ export default class GameSchema {
 		const {
 			api,
 			plugin,
-			name = 'Unknown game',
+			name = "Unknown game",
 			masterID, // unique
 			threadID, // unique
-			param = '',
+			param = "",
 			isGroup = false,
-			participants = [masterID],
+			participants = [masterID]
 		} = options
 		this.id = uniqid()
 		this.api = api

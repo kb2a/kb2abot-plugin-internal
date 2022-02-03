@@ -2,6 +2,7 @@ import fs from "fs"
 import url from "url"
 import glob from "glob"
 import {Plugin} from "kb2abot"
+import deepExtend from "deep-extend"
 
 export default class Internal extends Plugin {
 	package = JSON.parse(
@@ -13,13 +14,14 @@ export default class Internal extends Plugin {
 			aarInterval: 1000 * 60
 		}
 		const templateUserdata = {
+			autoreply: {engine: "off", list: {}},
 			aar: {},
 			messages: [],
 			rank: {}
 		}
 		return {
-			config: {...templateConfig, ...rawConfig},
-			userdata: {...templateUserdata, ...rawUserdata}
+			config: deepExtend(templateConfig, rawConfig),
+			userdata: deepExtend(templateUserdata, rawUserdata)
 		}
 	}
 
