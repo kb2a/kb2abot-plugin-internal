@@ -10,8 +10,7 @@ export default class AAR extends Command {
 		"*": "admin"
 	};
 
-	async load() {
-	}
+	async load() {}
 
 	// Called from this.plugin.onConnect
 	onLogin(api) {
@@ -19,25 +18,24 @@ export default class AAR extends Command {
 			if (!this.plugin.userdata.aar.enable) return
 			try {
 				const list = [
-					...(await api.getThreadList(1, null, ['PENDING'])),
-					...(await api.getThreadList(1, null, ['OTHER'])),
+					...(await api.getThreadList(1, null, ["PENDING"])),
+					...(await api.getThreadList(1, null, ["OTHER"]))
 				]
 				if (list[0]) {
-					const { isSubscribed, threadID } = list[0]
+					const {isSubscribed, threadID} = list[0]
 					const thread = await getThread(threadID)
-					if (!isSubscribed || await api.sendMessage('KB2ABOT - CONNECTED', threadID))
+					if (
+						!isSubscribed ||
+						(await api.sendMessage("KB2ABOT - CONNECTED", threadID))
+					)
 						await api.deleteThread(threadID)
 					else {
-						await api.sendMessage(
-							`/help để xem danh sách lệnh!`,
-							threadID
-						)
+						await api.sendMessage("/help để xem danh sách lệnh!", threadID)
 						success(`THREAD ${threadID} CONNECTED!`)
 						await thread.save()
 					}
 				}
-			}
-			catch(err) {
+			} catch (err) {
 				error("[Auto Accept Request] interval error: ", err)
 			}
 		}, this.plugin.config.aarInterval)

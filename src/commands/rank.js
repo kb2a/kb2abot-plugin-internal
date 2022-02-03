@@ -18,13 +18,17 @@ export default class Rank extends Command {
 		const threadRank = rank[thread.id]
 		const max = Number(message.args[0]) || 10
 		const {participantIDs} = await api.getThreadInfo(message.threadID)
-		const sorting = participantIDs.map(id => {
-			return {
-				threadID: id,
-				amount: threadRank[id] || 0
-			}
-		}).sort((a, b) => b.amount - a.amount)
-		const uinfos = await api.getUserInfo(sorting.map(s => s.threadID).slice(0, max))
+		const sorting = participantIDs
+			.map(id => {
+				return {
+					threadID: id,
+					amount: threadRank[id] || 0
+				}
+			})
+			.sort((a, b) => b.amount - a.amount)
+		const uinfos = await api.getUserInfo(
+			sorting.map(s => s.threadID).slice(0, max)
+		)
 		let repMsg = `Top ${max} bạn tương tác nhiều nhất: \n`
 		for (let i = 0; i < Math.min(max, sorting.length); i++) {
 			if (!uinfos[sorting[i].threadID]) continue

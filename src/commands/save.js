@@ -10,9 +10,7 @@ export default class Save extends Command {
 	};
 
 	// Called after this command is inited (like an async constructor)
-	async load() {
-		
-	}
+	async load() {}
 
 	// Called when this command is used by client
 	async onCall(thread, message, reply, api) {

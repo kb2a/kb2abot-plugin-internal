@@ -18,7 +18,10 @@ export default class Ping extends Command {
 		if (packets < 1 || packets > 100) return "Số packets ko hợp lệ"
 		const arr = []
 		for (let i = 0; i < packets; i++) {
-			const latency = Math.max(Date.now() - (await api.socket.emitPromise("ping", Date.now())), 0)
+			const latency = Math.max(
+				Date.now() - (await api.socket.emitPromise("ping", Date.now())),
+				0
+			)
 			console.log(latency)
 			arr.push(latency)
 			await asyncWait(100)

@@ -22,4 +22,3 @@ export default class ReplyReport extends Command {
 		return "Bạn chưa reply hoặc nội dung tin nhắn rỗng"
 	}
 }
-  
