@@ -32,7 +32,7 @@ export default class Internal extends Plugin {
 		)
 		const commands = []
 		for (const file of files) {
-			const Command = (await import(file)).default
+			const Command = (await import(url.pathToFileURL(file))).default
 			commands.push(new Command())
 		}
 		await this.commands.add(...commands)
