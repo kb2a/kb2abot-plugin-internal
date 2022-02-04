@@ -1,7 +1,7 @@
 {
   "name": "kb2abot-plugin-internal",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "internal plugin",
   "main": "src/index.js",
   "scripts": {
